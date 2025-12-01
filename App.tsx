@@ -2,9 +2,10 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { useVehiculoForm, TOTAL_STEPS } from './src/state/useVehiculoForm';
 import DatosPrincipaleVehiculo from './src/screens/DatosPrincipaleVehiculo';
+import DetallesVehiculo from './src/screens/DatallesVehiculo';
 
 export default function App() {
-  const { vehiculo, step, updateField, nextStep } = useVehiculoForm();
+  const { vehiculo, step, updateField, nextStep, prevStep } = useVehiculoForm();
 
   const renderScreen = () => {
     if (step === 0) {
@@ -13,6 +14,16 @@ export default function App() {
           vehiculo={vehiculo}
           onChange={updateField}
           onNext={nextStep}
+        />
+      );
+    }
+    if (step === 1) {
+      return (
+        <DetallesVehiculo
+          vehiculo={vehiculo}
+          onChange={updateField}
+          onNext={nextStep}
+          onBack={prevStep}
         />
       );
     }

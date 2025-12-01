@@ -24,10 +24,17 @@ export const useVehiculoForm = () => {
   const nextStep = () =>
     setStep(prev => (prev < 3 ? ((prev + 1) as VehiculoStep) : prev));
 
+  const prevStep = () =>
+    setStep(prev => (prev > 0 ? ((prev - 1) as VehiculoStep) : prev));
 
 
   const isStep1Valid = vehiculo.marca.trim() !== '' && vehiculo.modelo.trim() !== '';
 
+  const isStep2Valid =
+    vehiculo.placa.trim() !== '' &&
+    vehiculo.nombreDuenio.trim() !== '' &&
+    vehiculo.anio.trim() !== '' &&
+    vehiculo.tipoGasolina.trim() !== '';
 
 
   return {
@@ -37,6 +44,8 @@ export const useVehiculoForm = () => {
     updateField,
     goToStep,
     nextStep,
+    prevStep,
     isStep1Valid,
+    isStep2Valid,
   };
 };
