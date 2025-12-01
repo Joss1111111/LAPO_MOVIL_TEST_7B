@@ -3,9 +3,10 @@ import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { useVehiculoForm, TOTAL_STEPS } from './src/state/useVehiculoForm';
 import DatosPrincipaleVehiculo from './src/screens/DatosPrincipaleVehiculo';
 import DetallesVehiculo from './src/screens/DatallesVehiculo';
+import Resumen from './src/screens/ResumenVehiculo';
 
 export default function App() {
-  const { vehiculo, step, updateField, nextStep, prevStep } = useVehiculoForm();
+  const { vehiculo, step, updateField, nextStep, prevStep, registrarVehiculo } = useVehiculoForm();
 
   const renderScreen = () => {
     if (step === 0) {
@@ -25,9 +26,19 @@ export default function App() {
           onNext={nextStep}
           onBack={prevStep}
         />
-      );
+      ); 
     }
 
+    if (step === 2) {
+      return (
+        <Resumen
+          vehiculo={vehiculo}
+          onRegistrar={registrarVehiculo}
+          onBack={prevStep}
+        />
+      );
+      
+    }
     return null;
   };
 
