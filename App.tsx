@@ -1,15 +1,37 @@
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { useVehiculoForm, TOTAL_STEPS } from './src/state/useVehiculoForm';
+import DatosPrincipaleVehiculo from './src/screens/DatosPrincipaleVehiculo';
 
 export default function App() {
+  const { vehiculo, step, updateField, nextStep } = useVehiculoForm();
+
+  const renderScreen = () => {
+    if (step === 0) {
+      return (
+        <DatosPrincipaleVehiculo
+          vehiculo={vehiculo}
+          onChange={updateField}
+          onNext={nextStep}
+        />
+      );
+    }
+
+    return null;
+  };
 
   return (
-   <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={styles.safeArea}>
       <StatusBar style="dark" />
       <View style={styles.container}>
         <Text style={styles.title}>Registro de un vehículo</Text>
-        <Text style={styles.subtitle}>Paso 1 de 3</Text>
-        <View style={styles.card}></View>
+        <Text style={styles.subtitle}>
+          Paso {step + 1} de {TOTAL_STEPS}
+        </Text>
+
+        <View style={styles.card}>
+          {renderScreen()}
+        </View>
       </View>
     </SafeAreaView>
   );
