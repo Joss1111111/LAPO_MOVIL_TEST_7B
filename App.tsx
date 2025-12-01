@@ -2,11 +2,26 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { useVehiculoForm, TOTAL_STEPS } from './src/state/useVehiculoForm';
 import DatosPrincipaleVehiculo from './src/screens/DatosPrincipaleVehiculo';
+import ResumenVehiculo from './src/screens/ResumenVehiculo';
+import VehiculosRegistradosScreen from './src/screens/VehiculosRegistradosScreen';
 import DetallesVehiculo from './src/screens/DatallesVehiculo';
-import Resumen from './src/screens/ResumenVehiculo';
 
 export default function App() {
-  const { vehiculo, step, updateField, nextStep, prevStep, registrarVehiculo } = useVehiculoForm();
+  const {
+    vehiculo,
+    step,
+    vehiculosRegistrados,
+    updateField,
+    nextStep,
+    prevStep,
+    registrarVehiculo,
+    resetForm,
+  } = useVehiculoForm();
+
+  const handleRegistrar = () => {
+    registrarVehiculo(); // guarda en la lista
+    nextStep();          // pasa al step 3 (pantalla final)
+  };
 
   const renderScreen = () => {
     if (step === 0) {
@@ -18,6 +33,7 @@ export default function App() {
         />
       );
     }
+
     if (step === 1) {
       return (
         <DetallesVehiculo
@@ -26,20 +42,26 @@ export default function App() {
           onNext={nextStep}
           onBack={prevStep}
         />
-      ); 
+      );
     }
 
     if (step === 2) {
       return (
-        <Resumen
+        <ResumenVehiculo
           vehiculo={vehiculo}
-          onRegistrar={registrarVehiculo}
           onBack={prevStep}
+          onRegistrar={handleRegistrar}
         />
       );
-      
     }
-    return null;
+
+    // step === 3 -> pantalla final
+    return (
+      <VehiculosRegistradosScreen
+        vehiculos={vehiculosRegistrados}
+        onRegistrarOtro={resetForm}
+      />
+    );
   };
 
   return (
@@ -48,7 +70,9 @@ export default function App() {
       <View style={styles.container}>
         <Text style={styles.title}>Registro de un vehículo</Text>
         <Text style={styles.subtitle}>
-          Paso {step + 1} de {TOTAL_STEPS}
+          {step <= 2
+            ? `Paso ${step + 1} de ${TOTAL_STEPS}`
+            : 'Vehículos registrados'}
         </Text>
 
         <View style={styles.card}>

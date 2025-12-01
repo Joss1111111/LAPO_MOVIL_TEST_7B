@@ -40,6 +40,11 @@ export const useVehiculoForm = () => {
         setVehiculosRegistrados(prev => [...prev, vehiculo]);
     };
 
+    const resetForm = () => {
+    setVehiculo(emptyVehiculo);
+    setStep(0);
+  };
+
     return {
         vehiculo,
         step,
@@ -51,5 +56,6 @@ export const useVehiculoForm = () => {
         isStep1Valid,
         isStep2Valid,
         registrarVehiculo,
+        resetForm,
     };
 };
